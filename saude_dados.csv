@@ -1,0 +1,11 @@
+id_paciente,nome_paciente,data,latitude,longitude,bairro,doença,condição,sintomas
+1,Henrique,2020-06-10,-29.685,-53.8053,Centro,Covid-19,estável, "febre, dor de cabeça"
+2,João,2021-01-02,-29.686,-53.79619,Menino Jesus,Covid-19,critíca, "falta de ar, .."
+3,Beatriz,2021-01-20,-29.685,-53.7951,Menino Jesus,Dengue,estável, "febre, manchas,..."
+4,Hermes,2020-02-12,-29.684,-53.7949,Menino Jesus,Dengue,preucupante, "dor nas articulações"
+5,Caio,2020-07-12,-29.6880, -53.80524,Centro,Covid-19,preucupante, ""
+6,Pedro,2020-03-02,-29.68942, -53.80822,Centro,Covid-19,critíca, "falta de ar, dor de cabeça,.."
+7,Ana Laura,2021-01-27,-29.67745, -53.82012,Carolina,Toxoplasmose,estável, "dor de cabeça, febre, manchas,..."
+8,Maria,2020-017-12,-29.67732, -53.81774,Carolina,Toxoplasmose,preucupante, "Aumento do fígado, perda de coordenação"
+9,Julia,2021-02-1,-29.67715, -53.82242,Carolina,Toxoplasmose,estável, ""
+10,Pietro,2020-08-12,-29.70742, -53.72471,Camobi,Dengue,critíca, ""
