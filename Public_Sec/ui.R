@@ -4,7 +4,8 @@ ui <- fluidPage(
   theme = shinythemes::shinytheme("united"),
   
   titlePanel("Segurança Pública"),
-  # UI for two panels: "Arquivo", contains inputs to help upload a csv file according to its configurations; "Mapa", map and chart.
+  # UI for two panels: "Arquivo", contains inputs to help upload a csv file according to its configurations; 
+  #                    "Mapa", map and  a chart, also a input for the amount of centers for k-means algorithm.
   navbarPage("",
     tabPanel("Arquivo",
                  sidebarLayout(
@@ -41,9 +42,10 @@ ui <- fluidPage(
                      
                      
                      
-                      helpText("O arquivo csv deve conter como primeira coluna 'id',
-                                     As outras colunas podem estar em qualquer ordem mas devem ter os seguintes nomes: 'data',
-                                   'latitude', 'longitude', 'policial_encarregado', 'tipo_de_crime', 'situação', 'descrição' e 'situação'")
+                      helpText(p("O arquivo csv deve conter como primeira coluna 'id'."),
+                               p("As outras colunas podem estar em qualquer ordem mas devem ter os seguintes nomes: 'data',
+                                   'latitude', 'longitude', 'policial_encarregado', 'tipo_de_crime', 'situação', 'descrição' e 'situação'"),
+                              p("Obs: 'tipo_de_crime' é necessário para dados que possuem uma classificação, outros nomes não são aceitos."))
                      
                    ),
                    
@@ -51,10 +53,14 @@ ui <- fluidPage(
                    
              )),
     
-    tabPanel("Mapa", leafletOutput("seg_map", height = 800),
+    tabPanel("Mapa", conditionalPanel("output.has_no_class==0",leafletOutput("with_class_map", height = 800), 
+                                      h5(strong("**Dados não usam um campo de classificação**"))),
+                     conditionalPanel("output.has_no_class==1", leafletOutput("without_class_map", height = 800),
+                                      h5(strong("**Dados usam um campo de classificação**"))),
                      absolutePanel(
                        top = 250, left = 30, draggable = TRUE, width = "15%", style = "z-index:500; min-width: 250px;",
-                       highchartOutput("qnt_de_casos")
+                       highchartOutput("qnt_de_casos"), 
+                       conditionalPanel("output.has_no_class==1",numericInput("amt_clusters", "Qnt. de clusters", value = 0 ))
                      ))
 
   )

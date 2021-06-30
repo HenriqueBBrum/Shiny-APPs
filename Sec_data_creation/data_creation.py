@@ -6,19 +6,26 @@ import numpy as np
 
 import random
 
+# Two arguments are passed to this file
+# 1 - Filename/path of a file containing the necessary info to generate desired data
+# 2 - Name of the output file
 
-# Receives a file with this configurations:
-# First line: Amount of distinct groups.
-# Next N lines: Id of group, longitude, latitude, radius, amount of crimes for this group.
+# First argument: A file with this configuration:
+#
+# First line: 0 or 1, 0 means dataset has no Id of group;1 means the opposite
+# Second line: Amount of distinct groups.
+# Next N lines: Id of group(discarded if first line is 0), longitude, latitude, radius, amount of crimes for this group.
+# (Same row data is separeted by a blank space)
 # Start date
 # Final date
+
 
 
 random.seed(datetime.now())
 
 # Receives a file for info about how the data should be distributed
 with open(sys.argv[1]) as file:
-    argv = file.read().splitlines()
+    file_arg = file.read().splitlines()
 
 
 
@@ -66,19 +73,27 @@ def get_random_location(amt, long0, lat0, radius):
 names = open("names.txt", "r", encoding="utf-8").readlines()
 
 # Writes to a csv file
-with open('../seg_dados.csv','w', encoding='utf-8') as file:
-    file.write("id, data, latitude, longitude, policial_encarregado, tipo_de_crime, descrição, situação\n")
+with open('../'+sys.argv[2]+'.csv','w', encoding='utf-8') as file:
+    if(file_arg[0] == '0'):
+        file.write("id, data, latitude, longitude, policial_encarregado, descrição, situação\n")
+    else:
+        file.write("id, data, latitude, longitude, policial_encarregado, tipo_de_crime, descrição, situação\n")
     description = '""'
     count = 1
-    for i in range(1,int(argv[0])+1):
-        crime_info = argv[i].split(",")
+    #Read from the third line to the nth+2 (n is given on second line)
+    for i in range(2,int(file_arg[1])+2):
+        crime_info = file_arg[i].split(",")
         # crimeinfo = [group, longitude, latitude, radius, amount]
-        print(crime_info)
+        # Create m random points (m is the 5th column of ith row)
         for j in range(0, int(crime_info[4])):
-            situation = random.choices(['"Solucionado"', '"Em investigação"', '"Arquivado"'], [0.1,0.3,0.6])
+            situation = random.choices(['"Solucionado"', '"Em investigação"', '"Arquivado"'], [0.1,0.3,0.6])  # Eight choice has a weight
             location = create_random_point(float(crime_info[1]), float(crime_info[2]), float(crime_info[3]))
-            date = get_random_date(argv[int(argv[0])+1], argv[int(argv[0])+2])
-            line = "{}, {}, {}, {}, {}, {}, {}, {}\n".format(count, date, location[0], location[1],
-            random.choice(names).rstrip("\n"), crime_info[0],description,situation[0])
+            date = get_random_date(file_arg[int(file_arg[1])+2], file_arg[int(file_arg[1])+3])
+            if(file_arg[0] == '0'):
+                line = "{}, {}, {}, {}, {}, {}, {}\n".format(count, date, location[0], location[1],
+                    random.choice(names).rstrip("\n"), description,situation[0])
+            else:
+                line = "{}, {}, {}, {}, {}, {}, {}, {}\n".format(count, date, location[0], location[1],
+                    random.choice(names).rstrip("\n"), crime_info[0],description,situation[0])
             file.write(line)
             count+=1
