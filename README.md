@@ -3,3 +3,6 @@
 This repo consists of two shiny applications: A public security application and a public health (unfinished). <br>
 
 Besides those, there are also the data csv files used for each app, a folder for a data creation python script (used to create crime data; read the readme on that folder for more info) and a folder ("Articles") containing related work.
+
+
+To use either the security or health app, just download the desired directory and open the R project on RStudio.
